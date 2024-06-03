@@ -1,4 +1,12 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
+
+struct Pos {
+    int x;
+    int y;
+};
+
+void H_DrawCircleMP(SDL_Renderer *renderer, int x, int y, int r);
 
 int main() {
     
@@ -22,6 +30,7 @@ int main() {
 
         SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
         SDL_RenderClear(renderer);
+        H_DrawCircleMP(renderer, 320, 240, 50);
         SDL_RenderPresent(renderer);
     }
 
@@ -30,4 +39,15 @@ int main() {
     SDL_Quit();
 
     return 0;
+}
+
+void H_DrawCircleMP(SDL_Renderer *renderer, int x, int y, int r) {
+    struct Pos pos = {x, y - r};
+    SDL_SetRenderDrawColor(renderer, 255, 150, 150, 255);
+    SDL_RenderDrawPoint(renderer, x, y);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderDrawPoint(renderer, pos.x, pos.y);    
+    for (int i = 0; i < 15; i++) {
+        SDL_RenderDrawPoint(renderer, x , y + i);
+    }
 }
