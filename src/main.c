@@ -1,14 +1,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_timer.h>
+#include <math.h>
+#include <stdio.h>
 
-struct Pos {
-    int x;
-    int y;
-};
-
-void H_DrawCircleMP(SDL_Renderer *renderer, int x, int y, int r);
+void draw_test(SDL_Renderer *renderer, int center_x, int center_y);
 
 int main() {
+    double time;
     
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -30,7 +29,9 @@ int main() {
 
         SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
         SDL_RenderClear(renderer);
-        H_DrawCircleMP(renderer, 320, 240, 50);
+        time = SDL_GetTicks();
+        draw_test(renderer, 320 + 10 * cos(time / 60), 240 + 20 * sin(time / 60));
+        printf("time: %f\n", time);
         SDL_RenderPresent(renderer);
     }
 
@@ -41,13 +42,9 @@ int main() {
     return 0;
 }
 
-void H_DrawCircleMP(SDL_Renderer *renderer, int x, int y, int r) {
-    struct Pos pos = {x, y - r};
-    SDL_SetRenderDrawColor(renderer, 255, 150, 150, 255);
-    SDL_RenderDrawPoint(renderer, x, y);
+void draw_test(SDL_Renderer *renderer, int center_x, int center_y) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawPoint(renderer, pos.x, pos.y);    
-    for (int i = 0; i < 15; i++) {
-        SDL_RenderDrawPoint(renderer, x , y + i);
-    }
+    for (int i = 0; i < 360; i++) {
+        SDL_RenderDrawPoint(renderer, center_x + sin(i) * 50, center_y + cos(i) * 50);
+    }    
 }
